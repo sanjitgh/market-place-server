@@ -34,6 +34,18 @@ async function run() {
       const result = await jobCollection.insertOne(jobData)
       res.send(result)
     })
+    
+    // update a job data in database
+    app.put('/update-job/:id', async (req, res) => {
+      const jobData = req.body;
+      const id= req.params.id;
+      const update = {
+        $set: jobData
+      };
+      const query = {_id : new ObjectId(id)}
+      const result = await jobCollection.updateOne(query, update)
+      res.send(result)
+    })
 
     // get all job data from database
     app.get('/jobs', async (req, res) => {
@@ -65,8 +77,10 @@ async function run() {
       res.send(result);
     })
 
-    // Send a ping to confirm a successful connection
-    await client.db('admin').command({ ping: 1 })
+
+
+
+
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!'
     )
