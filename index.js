@@ -84,7 +84,7 @@ async function run() {
       const result = await bidsCollection.insertOne(jobData);
 
       // 2. Increase bid count in job collection
-      const updateBidCount = await jobCollection.updateOne()
+      const updateBidCount = await jobCollection.updateOne();
       res.send(result)
     })
 
