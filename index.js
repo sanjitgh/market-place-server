@@ -26,8 +26,8 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    const jobCollection = client.db('market_place').collection('jobs')
-
+    const jobCollection = client.db('market_place').collection('jobs');
+    const bidsCollection = client.db('market_place').collection('bids');
     // save a job data in database
     app.post('/add-job', async (req, res) => {
       const jobData = req.body;
@@ -77,8 +77,16 @@ async function run() {
       res.send(result);
     })
 
+    // save a bid data in database
+    app.post('/add-bid', async (req, res) => {
+      // 1. Save bids data in db
+      const jobData = req.body;
+      const result = await bidsCollection.insertOne(jobData);
 
-
+      // 2. Increase bid count in job collection
+      const updateBidCount = await jobCollection.updateOne()
+      res.send(result)
+    })
 
 
     console.log(
